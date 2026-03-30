@@ -1,0 +1,23 @@
+
+#include <iostream>
+using namespace std;
+int main() {
+    float num1, num2;
+    std::cout <<"escribe el numero: ";
+    std::cin>> num1;
+    
+    std::cout <<"escribe el numero: ";
+    std::cin>> num2;
+    
+    float suma = num1+num2;
+    float resta = num1-num2;
+    float multiplicacion = num1*num2;
+    float division = num1/num2;
+    
+    std::cout <<"la suma es: "  << suma << std::endl;
+    std::cout <<"la resta es: " << resta <<std::endl;
+     std::cout <<"la multiplicacion es: " << multiplicacion <<std::endl;
+      std::cout <<"la division es: " << division <<std::endl;
+    return 0;
+    
+}
