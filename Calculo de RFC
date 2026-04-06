@@ -1,0 +1,90 @@
+/******************************************************************************
+
+   Autor: Francisco Ortega
+  Programa: Calculo de RFC
+  Fecha: 02/04/2024
+
+*******************************************************************************/
+#include <iostream>
+#include <vector>
+#include <string>
+//Diccionario de palabras NO permitidas
+const std::vector <std::string> palabrasprohibidas = {
+"PENE", "CACA", "PUTO", "MAMO", "CULO", "QULO", "TETA", "PEDO", "JOTO",
+"VERG", "KAKA", "CAGO", "FETO", "PUTA", "RUIN", "COGE", "COJE", "KULO",
+"MION", "PITO", "LOCO", "VAGO", "VAGA", "VAGA"
+};
+// verificar y modificar palabras prohibidas del diccionario
+std::string corregirRFC(const std::string& rfc) {
+    for (const std::string& palabras : palabrasprohibidas) {
+        if (rfc == palabras) {
+            return rfc.substr(0,3) + "X"; // remplaza la ultima letra por una "X"
+        }
+    }
+    return rfc;
+}
+// funcion para obterner la primera vocal interna de una cadena
+char obternerprimeravocalinterna(const std::string& str ) {
+    for (size_t i=1; i < str.length(); ++i ) {
+        char C = str[i];
+        if (C == 'A' || C == 'E' ||C == 'I' ||C == 'O' || C == 'U')
+        return C;
+        
+    }
+    return 'x'; //si no se encuentra ninguna una vocal interna, se usa X
+}
+// funcion principal para calcular el rfc
+std::string calcularRFC(std::string& nombre, const std::string& apellidopaterno, const std::string& apellidomaterno, const std::string& fechanacimiento) {
+    
+    //se declara la variable donde guardaremos el rfc 
+    std::string rfc;
+    
+    // se obtienen le primera letra inicial y la primera vocal ineterna del apellido apellidopaterno
+    char letrainicial = apellidopaterno[0];
+    char primeravocalinterna = obternerprimeravocalinterna(apellidopaterno);
+    
+    // se obtiene la inicial del apellido materno o se usa la letra 'X' si no obtiene
+    char incialapellidomaterno = (!apellidomaterno.empty()) ? apellidomaterno[0]: 'X';
+    
+    // se obtiene la inicial del primer nombre o se usa una 'X' si no hay 
+    char inicialnombre = nombre[0];
+    
+    // se obtiene los dos ultimos digitos del año de fechanacimiento
+    std::string anio = fechanacimiento.substr(2,2);
+    
+    // se obtiene el mes y dia de fechanacimiento
+    std::string mes = fechanacimiento.substr(5,2);
+    std::string dia = fechanacimiento.substr(8,2);
+    
+    // se contruye el RFC sumando el texto de la informacion proporcionada 
+    rfc = letrainicial;
+    rfc += primeravocalinterna;
+    rfc += incialapellidomaterno;
+    rfc += inicialnombre;
+    
+    // aqui se ejecuta las comparación de las palabras que podrian ser no convenientes y se realiza el cambio por la letra X
+    rfc = corregirRFC(rfc);
+    
+    // se realiza la correción se continúa creando el RFC
+    rfc += anio;
+    rfc += mes;
+    rfc += dia; 
+    return rfc;
+}
+int main() {
+    // se despliega en la consola los pasos a seguir y se espera que los datos se introduzcan en MAYÚSCULA
+    
+    std::string nombre, apellidopaterno, apellidomaterno, fechanacimiento;
+    std::cout <<"introduce tu nombre: ";
+    std::getline(std::cin, nombre);
+    std::cout <<"introduce tu apellido paterno: ";
+    std::getline(std::cin, apellidopaterno);
+    std::cout <<"introduce tu apellido materno: ";
+    std::getline(std::cin, apellidomaterno);
+    std::cout <<"introduce la fecha de nacimiento en el formato (YYYY/MM/DD): ";
+    std::getline(std::cin, fechanacimiento);
+    std::string rfc = calcularRFC(nombre, apellidopaterno, apellidomaterno, fechanacimiento);
+    std::cout <<"RFC: " << rfc << std::endl;
+    
+    return 0;
+}
